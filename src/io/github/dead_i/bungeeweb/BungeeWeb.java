@@ -75,7 +75,7 @@ public class BungeeWeb extends Plugin {
 
         // Initial database table setup
         try {
-            db.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `" + getConfig().getString("database.prefix") + "log` (`id` int(16) NOT NULL AUTO_INCREMENT, `time` int(10) NOT NULL, `type` int(2) NOT NULL, `uuid` varchar(32) NOT NULL, `username` varchar(16) NOT NULL, `content` varchar(100) NOT NULL DEFAULT '', PRIMARY KEY (`id`)) CHARACTER SET utf8");
+            db.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `" + getConfig().getString("database.prefix") + "log` (`id` int(16) NOT NULL AUTO_INCREMENT, `time` int(10) NOT NULL, `type` int(2) NOT NULL, `uuid` varchar(32) NOT NULL, `username` varchar(28) NOT NULL, `content` varchar(256) NOT NULL DEFAULT '', PRIMARY KEY (`id`)) CHARACTER SET utf8");
             db.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `" + getConfig().getString("database.prefix") + "users` (`id` int(4) NOT NULL AUTO_INCREMENT, `user` varchar(16) NOT NULL, `pass` varchar(32) NOT NULL, `salt` varchar(16) NOT NULL, `group` int(1) NOT NULL DEFAULT '1', PRIMARY KEY (`id`)) CHARACTER SET utf8");
             db.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `" + getConfig().getString("database.prefix") + "stats` (`id` int(16) NOT NULL AUTO_INCREMENT, `time` int(10) NOT NULL, `playercount` int(6) NOT NULL DEFAULT -1, `maxplayers` int(6) NOT NULL DEFAULT -1, `activity` int(12) NOT NULL DEFAULT -1, PRIMARY KEY (`id`)) CHARACTER SET utf8");
 
@@ -217,7 +217,7 @@ public class BungeeWeb extends Plugin {
                     st.setInt(2, type);
                     st.setString(3, getUUID(player));
                     st.setString(4, player.getName());
-                    st.setString(5, content.length() > 100 ? content.substring(0, 99) : content);
+                    st.setString(5, content.length() > 256 ? content.substring(0, 255) : content);
                     st.executeUpdate();
                     st.close();
                 } catch (SQLException e) {
